@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% import "bootstrap_wtf.html" as wtf %}
+
+{% block content %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Escena</title>
+    <style>
+        /* body {
+            font-size: {{ scene.font_size }};
+            font-family: {{ scene.font_family }};
+        } */
+    </style>
+</head>
+<body>
+    <img src="{{ url_for('static', filename=scene.image) }}" alt="Escena">
+    <p>{{ scene.text }}</p>
+    <form method="post">
+        {% for group in scene.groups %}
+            <label>{{ group.question }}</label>
+            <input type="text" name="answer">
+        {% endfor %}
+        <button type="submit">Enviar</button>
+    </form>
+    <p>Temps restant: <span id="countdown">{{ countdown_time }}</span> segons</p>
+
+{% endblock %}
+
+{% block scripting %}
+<script>
+    function updateCountdown() {
+        fetch('/treasuremap/countdown')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('countdown').innerText = data;
+            });
+    }
+    setInterval(updateCountdown, 1000);
+</script>
+{% endblock %}
