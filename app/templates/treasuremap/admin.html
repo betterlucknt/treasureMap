@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'treasuremap/base_treasuremap.html' %}
 {% import "bootstrap_wtf.html" as wtf %}
 
 {% block content %}
@@ -13,23 +13,65 @@
             font-family: {{ scene.font_family }};
         } */
     </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <img src="{{ url_for('static', filename=scene.image) }}" alt="Escena">
     <p>{{ scene.text }}</p>
-    <form method="post">
-        {% for group in scene.groups %}
-            <label>{{ group.question }}</label>
-            <input type="text" name="answer">
-        {% endfor %}
-        <button type="submit">Enviar</button>
-    </form>
-    <p>Temps restant: <span id="countdown">{{ countdown_time }}</span> segons</p>
+    {% for group in scene.groups %}
+        <p>{{ group.question }}</p>
+        <p>{{ group.answer }}</p>
+    {% endfor %}
+    
+    <button onclick="addTime()">Add time</button>
+    <button onclick="stopTime()">Stop time</button>
+    <button onclick="resumeTime()">Resume time</button>
+    <button onclick="substractTime()">Substract time</button>
+    <button onclick="advanceScene()">Advance scene</button>
+    <button onclick="retraceScene()">Retrace scene</button>
+    <button onclick="showOctocorn()">Show octocorn</button>
+    <button onclick="hideOctocorn()">Hide octocorn</button>
+    <button onclick="restart()">Restart</button>
 
 {% endblock %}
 
 {% block scripting %}
 <script>
+    function showOctocorn() {
+        fetch('/treasuremap/show_octocorn_help');
+    }
+    
+    function hideOctocorn() {
+        fetch('/treasuremap/hide_octocorn_help');
+    }
+    
+    function advanceScene() {
+        fetch('/treasuremap/advance_scene');
+    }
+    
+    function retraceScene() {
+        fetch('/treasuremap/retrace_scene');
+    }
+    
+    function addTime() {
+        fetch('/treasuremap/add_time');
+    }
+    
+    function stopTime() {
+        fetch('/treasuremap/stop_time');
+    }
+    
+    function resumeTime() {
+        fetch('/treasuremap/resume_time');
+    }
+    
+    function substractTime() {
+        fetch('/treasuremap/substract_time');
+    }
+
+    function restart() {
+        fetch('/treasuremap/start');
+    }
+
     function updateCountdown() {
         fetch('/treasuremap/countdown')
             .then(response => response.text())
@@ -37,6 +79,21 @@
                 document.getElementById('countdown').innerText = data;
             });
     }
-    setInterval(updateCountdown, 10000);
+    setInterval(updateCountdown, 1000);
+    
+    function checkReload() {
+                      fetch('/treasuremap/needs_redirect')
+                          .then(response => response.json())
+                          .then(data => {
+                              if (data.needs_redirect_admin) {
+                                  window.location.href = "/treasuremap/admin";
+                              }
+                          })
+                          .catch(error => console.error("Error:", error));
+    }
+    setInterval(checkReload, 1000);  
+             
+
+
 </script>
 {% endblock %}

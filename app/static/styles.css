@@ -1,0 +1,15 @@
+@font-face {
+    font-family: 'digital-7 regular font';
+    src: url("fonts/digital-7.ttf") format('truetype');
+}
+
+.digital-clock {
+    font-family: 'digital-7 regular font';
+    font-size: 288px;
+    color: #000000;
+}
+
+.main-text {
+    font-size: 20px;
+    color: #000000;
+}

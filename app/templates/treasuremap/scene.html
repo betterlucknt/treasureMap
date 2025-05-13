@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'treasuremap/base_treasuremap.html' %}
 {% import "bootstrap_wtf.html" as wtf %}
 
 {% block content %}
@@ -15,21 +15,66 @@
     </style>
 </head>
 <body>
-    <img src="{{ url_for('static', filename=scene.image) }}" alt="Escena">
-    <p>{{ scene.text }}</p>
-    <form method="post">
-        {% for group in scene.groups %}
-            <label>{{ group.question }}</label>
-            <input type="text" name="answer">
-        {% endfor %}
-        <button type="submit">Enviar</button>
-    </form>
-    <p>Temps restant: <span id="countdown">{{ countdown_time }}</span> segons</p>
+    <div class="container">
+        <div class="row">
+            {% if scene.image %}
+                <div class="col-5">
+                    <img src="{{ url_for('static', filename=scene.image) }}" alt="Escena" style="width: 500px; height: auto;">
+                    <!-- <img src="{{ url_for('static', filename=scene.image) }}" alt="Escena"> -->
+                </div>
+            {% endif %}
+            <div class="col-7">
+                <p class="main-text" >{{ scene.text }}</p>
+                <form method="post">
+                    {% if scene.question != '' %}
+                        <label>{{ scene.question }}</label>
+                        <input type="text" name="answer">
+                        {% set questions = true %}
+                        <button type="submit">Envia</button>
+                    {% else %}
+                        <button type="submit">Següent</button>
+                    {% endif %}
+                </form>
+                {% if scene.audio %}
+                <button onclick="playAudio()">Play</button>
+                <audio id="audioToPlay" autoplay>
+                    <source src="{{ url_for('static', filename=scene.audio) }}" type="audio/mp3">
+                </audio>
+                {% endif %}
+                {% if scene.octocorn %}
+                    <p id="octocorn-help" hidden>{{ scene.octocorn }}</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
 
 {% endblock %}
 
 {% block scripting %}
 <script>
+    
+    function playAudio() {
+        let audio = document.getElementById("audioToPlay");
+        audio.play();
+    }
+    setTimeout(playAudio, 3000);  
+
+    function checkOctocornStatus() {
+        fetch('/treasuremap/check_octocorn_status')
+            .then(response => response.json())
+            .then(data => {
+                let octocorn = document.getElementById("octocorn-help");
+                
+                if (data.show_octocorn === true){
+                    octocorn.removeAttribute("hidden");
+                }else{
+                    octocorn.setAttribute("hidden", "");
+                }
+            });
+    }
+    setInterval(checkOctocornStatus, 300);
+
     function updateCountdown() {
         fetch('/treasuremap/countdown')
             .then(response => response.text())
@@ -37,6 +82,18 @@
                 document.getElementById('countdown').innerText = data;
             });
     }
-    setInterval(updateCountdown, 10000);
+    setInterval(updateCountdown, 1000);
+    
+    function checkReload() {
+                      fetch('/treasuremap/needs_redirect')
+                          .then(response => response.json())
+                          .then(data => {
+                              if (data.needs_redirect_user) {
+                                  window.location.href = "/treasuremap/scene";
+                              }
+                          })
+                          .catch(error => console.error("Error:", error));
+    }
+    setInterval(checkReload, 1000);  
 </script>
 {% endblock %}
