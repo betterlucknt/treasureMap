@@ -25,16 +25,8 @@
             {% endif %}
             <div class="col-7">
                 <p class="main-text" >{{ scene.text }}</p>
-                <form method="post">
-                    {% if scene.question != '' %}
-                        <label>{{ scene.question }}</label>
-                        <input type="text" name="answer">
-                        {% set questions = true %}
-                        <button type="submit">Envia</button>
-                    {% else %}
-                        <button type="submit">Següent</button>
-                    {% endif %}
-                </form>
+                <button onclick="octocornHelp()">Ajuda Cornipulpo!!</button>
+            </p>
                 {% if scene.audio %}
                 <button onclick="playAudio()">Play</button>
                 <audio id="audioToPlay" autoplay>
@@ -42,7 +34,17 @@
                 </audio>
                 {% endif %}
                 {% if scene.octocorn %}
-                    <p id="octocorn-help" hidden>{{ scene.octocorn }}</p>
+                
+                <div class="container">
+                    <div class="row">
+                        <div class="col-4">
+                            <img id="octocorn-image" src="{{ url_for('static', filename=scene.octocorn_image) }}" alt="Escena" style="width: 200px; height: auto;" hidden>
+                        </div>
+                        <div class="col-8">
+                            <p id="octocorn-help" hidden>{{ scene.octocorn }}</p>
+                        </div>
+                    </div>
+                </div>
                 {% endif %}
             </div>
         </div>
@@ -54,6 +56,10 @@
 {% block scripting %}
 <script>
     
+    function octocornHelp() {
+        fetch('/treasuremap/show_octocorn_help');
+    }
+
     function playAudio() {
         let audio = document.getElementById("audioToPlay");
         audio.play();
@@ -65,11 +71,14 @@
             .then(response => response.json())
             .then(data => {
                 let octocorn = document.getElementById("octocorn-help");
+                let octocorn_image = document.getElementById("octocorn-image");
                 
                 if (data.show_octocorn === true){
                     octocorn.removeAttribute("hidden");
+                    octocorn_image.removeAttribute("hidden");
                 }else{
                     octocorn.setAttribute("hidden", "");
+                    octocorn_image.setAttribute("hidden", "");
                 }
             });
     }
