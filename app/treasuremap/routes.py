@@ -43,7 +43,8 @@ Un cièntific boig vol crear un raig per destruïr el Sol i per aconseguir-ho ne
     },
     2: {
         "image": "images/sticker_1.avif",
-        "text": f'''Popunicorn: Ostres no, el Dr. Xoriço ens ha enganyat, però no us preocupeu, els unicorns us prepararem l'antidot per parar el virus. Vosaltres seguiu buscant les gemes que no queda gaire temps. Seguiu el Mapa! ''',
+        "text": f'''Ostres no, el Dr. Xoriço ens ha enganyat, però no us preocupeu, els unicorns us prepararem l'antidot per parar el virus. 
+        Vosaltres seguiu buscant les gemes que no queda gaire temps. Seguiu el Mapa! ''',
         'octocorn': '''"Nuvols" és la última paraula de la frase''',
         'octocorn_image': "images/sticker_1.avif",
         "question": "", 
