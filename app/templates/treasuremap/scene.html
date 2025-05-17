@@ -25,15 +25,17 @@
             {% endif %}
             <div class="col-7">
                 <p class="main-text" >{{ scene.text }}</p>
-                <button onclick="octocornHelp()">Ajuda Cornipulpo!!</button>
-            </p>
-                {% if scene.audio %}
+                    {% if scene.octocorn %}
+                        <button onclick="octocornHelp()">Ajuda Popunicorn!!</button>
+                    {% endif %}
+                </p>
+            {% if scene.audio %}
                 <button onclick="playAudio()">Play</button>
                 <audio id="audioToPlay" autoplay>
                     <source src="{{ url_for('static', filename=scene.audio) }}" type="audio/mp3">
                 </audio>
-                {% endif %}
-                {% if scene.octocorn %}
+            {% endif %}
+            {% if scene.octocorn %}
                 
                 <div class="container">
                     <div class="row">
@@ -45,7 +47,7 @@
                         </div>
                     </div>
                 </div>
-                {% endif %}
+            {% endif %}
             </div>
         </div>
     </div>

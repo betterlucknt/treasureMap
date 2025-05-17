@@ -22,15 +22,19 @@
         <p>{{ group.answer }}</p>
     {% endfor %}
     
-    <button onclick="addTime()">Add time</button>
-    <button onclick="stopTime()">Stop time</button>
-    <button onclick="resumeTime()">Resume time</button>
-    <button onclick="substractTime()">Substract time</button>
-    <button onclick="advanceScene()">Advance scene</button>
-    <button onclick="retraceScene()">Retrace scene</button>
-    <button onclick="showOctocorn()">Show octocorn</button>
-    <button onclick="hideOctocorn()">Hide octocorn</button>
-    <button onclick="restart()">Restart</button>
+    <button class="btn btn-primary" onclick="addTime()">Add 10 time</button>
+    <button class="btn btn-primary" onclick="addTime5()">Add 5 time</button>
+    <button class="btn btn-primary" onclick="addTime1()">Add 1 time</button>
+    <button class="btn btn-primary" onclick="stopTime()">Stop time</button>
+    <button class="btn btn-primary" onclick="resumeTime()">Resume time</button>
+    <button class="btn btn-primary" onclick="substractTime()">Substract 10 time</button>
+    <button class="btn btn-primary" onclick="substractTime5()">Substract 5 time</button>
+    <button class="btn btn-primary" onclick="substractTime1()">Substract 1 time</button>
+    <button class="btn btn-primary" onclick="advanceScene()">Advance scene</button>
+    <button class="btn btn-primary" onclick="retraceScene()">Retrace scene</button>
+    <button class="btn btn-primary" onclick="showOctocorn()">Show octocorn</button>
+    <button class="btn btn-primary" onclick="hideOctocorn()">Hide octocorn</button>
+    <button class="btn btn-primary" onclick="restart()">Restart</button>
 
 {% endblock %}
 
@@ -55,6 +59,12 @@
     function addTime() {
         fetch('/treasuremap/add_time');
     }
+    function addTime5() {
+        fetch('/treasuremap/add_time_5');
+    }
+    function addTime1() {
+        fetch('/treasuremap/add_time_1');
+    }
     
     function stopTime() {
         fetch('/treasuremap/stop_time');
@@ -66,6 +76,12 @@
     
     function substractTime() {
         fetch('/treasuremap/substract_time');
+    }
+    function substractTime5() {
+        fetch('/treasuremap/substract_time_5');
+    }
+    function substractTime1() {
+        fetch('/treasuremap/substract_time_1');
     }
 
     function restart() {
