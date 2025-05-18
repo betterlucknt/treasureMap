@@ -8,20 +8,10 @@
     <meta charset="UTF-8">
     <title>Escena</title>
     <style>
-        /* body {
-            font-size: {{ scene.font_size }};
-            font-family: {{ scene.font_family }};
-        } */
     </style>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <p>{{ scene.text }}</p>
-    {% for group in scene.groups %}
-        <p>{{ group.question }}</p>
-        <p>{{ group.answer }}</p>
-    {% endfor %}
-    
     <button class="btn btn-primary" onclick="addTime()">Add 10 time</button>
     <button class="btn btn-primary" onclick="addTime5()">Add 5 time</button>
     <button class="btn btn-primary" onclick="addTime1()">Add 1 time</button>
@@ -35,6 +25,13 @@
     <button class="btn btn-primary" onclick="showOctocorn()">Show octocorn</button>
     <button class="btn btn-primary" onclick="hideOctocorn()">Hide octocorn</button>
     <button class="btn btn-primary" onclick="restart()">Restart</button>
+
+    <p>current_text: {{ scenes[current_step].text }}</p>
+    <p>current_octocorn: {{ scenes[current_step].octocorn }}</p>
+    {% if current_step < 16 %}
+        <p>next_text: {{ scenes[current_step + 1].text }}</p>
+        <p>next_octocorn: {{ scenes[current_step + 1].octocorn }}</p>
+    {% endif %}
 
 {% endblock %}
 

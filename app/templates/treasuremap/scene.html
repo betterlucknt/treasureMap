@@ -8,42 +8,37 @@
     <meta charset="UTF-8">
     <title>Escena</title>
     <style>
-        /* body {
-            font-size: {{ scene.font_size }};
-            font-family: {{ scene.font_family }};
-        } */
     </style>
 </head>
-<body>
+<body onload="playAudio()">
     <div class="container">
         <div class="row">
-            {% if scene.image %}
+            {% if scenes[current_step].image %}
                 <div class="col-5">
-                    <img src="{{ url_for('static', filename=scene.image) }}" alt="Escena" style="width: 500px; height: auto;">
-                    <!-- <img src="{{ url_for('static', filename=scene.image) }}" alt="Escena"> -->
+                    <img src="{{ url_for('static', filename=scenes[current_step].image) }}" alt="Escena" style="width: 500px; height: auto;">
                 </div>
             {% endif %}
             <div class="col-7">
-                <p class="main-text" >{{ scene.text }}</p>
-                    {% if scene.octocorn %}
+                <p class="main-text" >{{ scenes[current_step].text }}</p>
+                    {% if scenes[current_step].octocorn %}
                         <button onclick="octocornHelp()">Ajuda Popunicorn!!</button>
                     {% endif %}
                 </p>
-            {% if scene.audio %}
-                <button onclick="playAudio()">Play</button>
+            {% if scenes[current_step].audio %}
+                <button onclick="playAudio()" hidden>Play</button>
                 <audio id="audioToPlay" autoplay>
-                    <source src="{{ url_for('static', filename=scene.audio) }}" type="audio/mp3">
+                    <source src="{{ url_for('static', filename=scenes[current_step].audio) }}" type="audio/mp3">
                 </audio>
             {% endif %}
-            {% if scene.octocorn %}
+            {% if scenes[current_step].octocorn %}
                 
                 <div class="container">
                     <div class="row">
                         <div class="col-4">
-                            <img id="octocorn-image" src="{{ url_for('static', filename=scene.octocorn_image) }}" alt="Escena" style="width: 200px; height: auto;" hidden>
+                            <img id="octocorn-image" src="{{ url_for('static', filename=scenes[current_step].octocorn_image) }}" alt="Escena" style="width: 200px; height: auto;" hidden>
                         </div>
                         <div class="col-8">
-                            <p id="octocorn-help" hidden>{{ scene.octocorn }}</p>
+                            <p id="octocorn-help" hidden>{{ scenes[current_step].octocorn }}</p>
                         </div>
                     </div>
                 </div>
@@ -63,10 +58,11 @@
     }
 
     function playAudio() {
-        let audio = document.getElementById("audioToPlay");
-        audio.play();
+            const audio = document.getElementById("audioToPlay");
+            audio.play().catch(error => {
+                console.log("Auto-play failed:", error);
+            });
     }
-    setTimeout(playAudio, 3000);  
 
     function checkOctocornStatus() {
         fetch('/treasuremap/check_octocorn_status')

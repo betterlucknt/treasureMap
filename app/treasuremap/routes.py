@@ -10,16 +10,7 @@ from datetime import datetime, timedelta
 COUNTDOWN_MINUTES = 50
 COUNTDOWN_ADD = 10
 COUNTDOWN_SUBSTRACT = 10
-START_STEP = 3
-
-# TODO:
-#        - play from admin
-#        - stop audio
-#        - imatges adients
-#        - Posar alguna gemma en la pagina
-#        - Posar les gemmes que s'activin a mida que les aconsegueixen
-#        - Check Needs redirect per actualitzar la pagina si hi ha canvi de current_scene
-# Audios: octocorn->baby; drxorç->prot.Tone34.chitter77; unicorns -> Necromancer
+START_STEP = 5
 
 
 scenes = {
@@ -77,7 +68,8 @@ Un cièntific boig vol crear un raig per destruïr el Sol i per aconseguir-ho ne
     },
     8: {
         "image": "images/Designer (13).jpeg",
-        "text": "Oh no! el DR. Xoriço està començant a tapar el sol utilitzant energia que ha robat del nostre món, afanyeu-vos, necessitem les gemmes o aquest malvat es sortirà amb la seva.",
+        "text": "Oh no! el DR. Xoriço està començant a tapar el sol utilitzant energia que ha robat del nostre món, afanyeu-vos, necessitem les gemmes o aquest malvat es sortirà amb la seva. Sort que teniu les llanternes per poder veure a la foscor! Utilitzeu-les per seguir el mapa.",
+        "audio": "audios/thunder.mp3",
         "question": "", 
         "answer": "", 
     },
@@ -165,6 +157,7 @@ def scene():
     global show_octocorn
     global time_stopped
     global game_started
+    global end_time
     global needs_redirect_user
     needs_redirect_user = False
     if request.method == 'POST':
@@ -174,18 +167,20 @@ def scene():
             if(current_step < len(scenes)):
                 current_step += 1
             if(current_step > START_STEP):
+                
+                end_time = datetime.now() + timedelta(minutes=COUNTDOWN_MINUTES)
                 time_stopped = False
                 game_started = True
                     
             return redirect('/treasuremap/scene')
-    return render_template('treasuremap/scene.html', scene=scenes[current_step], current_step=current_step)
+    return render_template('treasuremap/scene.html', scenes=scenes, current_step=current_step)
 
 @bp.route('/admin', methods=['GET', 'POST'])
 def admin():
     global current_step
     global needs_redirect_admin
     needs_redirect_admin = False
-    return render_template('treasuremap/admin.html', scene=scenes[current_step], current_step=current_step)
+    return render_template('treasuremap/admin.html', scenes=scenes, current_step=current_step)
 
 @bp.route('/countdown')
 def countdown():
@@ -291,13 +286,15 @@ def advance_scene():
     global needs_redirect_user
     global game_started
     global time_stopped
+    global end_time
 
     if current_step < len(scenes):
         show_octocorn = False
         current_step +=1
         needs_redirect_admin = True
         needs_redirect_user = True
-        if(current_step > START_STEP):
+        if(current_step == START_STEP):
+            end_time = datetime.now() + timedelta(minutes=COUNTDOWN_MINUTES)
             time_stopped = False
             game_started = True
 
