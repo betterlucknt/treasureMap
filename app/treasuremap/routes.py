@@ -147,9 +147,32 @@ needs_redirect_admin = False
 needs_redirect_user = False
 
 
-@bp.route('/')
+CORRECT_OPTION = "Groc"  # Change to your correct option
+
+# @bp.route('/')
+# def treasuremap_home():
+    # return redirect(url_for('treasuremap.scene'))
+
+@bp.route('/', methods=['GET', 'POST'])
 def treasuremap_home():
-    return redirect(url_for('treasuremap.scene'))
+    global current_step
+    if request.method == 'POST':
+        selected = request.form.get('option')
+        if selected == CORRECT_OPTION:
+            return redirect(url_for('treasuremap.ok'))
+        else:
+            return redirect(url_for('treasuremap.notok'))
+    return render_template('treasuremap/select_option.html', scenes=scenes, current_step=current_step)
+
+@bp.route('/ok')
+def ok():
+    global current_step
+    return render_template('treasuremap/ok.html', scenes=scenes, current_step=current_step)
+
+@bp.route('/notok')
+def notok():
+    global current_step
+    return render_template('treasuremap/nok.html', scenes=scenes, current_step=current_step)
 
 @bp.route('/scene', methods=['GET', 'POST'])
 def scene():

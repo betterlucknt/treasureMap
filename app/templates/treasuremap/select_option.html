@@ -1,0 +1,32 @@
+{% extends "treasuremap/base_treasuremap.html" %}
+{% block content %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Escena</title>
+    <style>
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+                <div class="col-5">
+                    <img src="{{ url_for('static', filename='images/Pagina_web_dia_1.jpeg') }}" alt="Escena" style="width: 500px; height: auto;">
+                </div>
+            <div class="col-7">
+                <form method="post">
+                <h2>Al final quin creieu que es el cotxe que he d'agafar?:</h2>
+                <select name="option" id="option">
+                    <option value="Verd">Verd</option>
+                    <option value="Groc">Groc</option>
+                    <option value="Taronja">Taronja</option>
+                    <option value="Blau">Blau</option>
+                </select>
+                <button type="submit">Descongelar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+{% endblock %}
