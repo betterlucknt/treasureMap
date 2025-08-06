@@ -159,7 +159,7 @@ def treasuremap_home():
     if request.method == 'POST':
         selected = request.form.get('option')
         if selected == CORRECT_OPTION:
-            return redirect(url_for('treasuremap.ok'))
+            return redirect(url_for('treasuremap.descongelar'))
         else:
             return redirect(url_for('treasuremap.notok'))
     return render_template('treasuremap/select_option.html', scenes=scenes, current_step=current_step)
@@ -168,6 +168,13 @@ def treasuremap_home():
 def ok():
     global current_step
     return render_template('treasuremap/ok.html', scenes=scenes, current_step=current_step)
+
+@bp.route('/descongelar', methods=['GET', 'POST'])
+def descongelar():
+    global current_step
+    if request.method == 'POST':
+        return redirect(url_for('treasuremap.ok'))
+    return render_template('treasuremap/descongelar.html', scenes=scenes, current_step=current_step)
 
 @bp.route('/notok')
 def notok():
