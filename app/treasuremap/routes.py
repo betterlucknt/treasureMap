@@ -147,7 +147,7 @@ needs_redirect_admin = False
 needs_redirect_user = False
 
 
-CORRECT_OPTION = 500  # Change to your correct option
+CORRECT_OPTION = ["verd", "blau", "vermell", "blanc", "vermell", "blau", "vermell", "groc"]  # Change to your correct option
 
 # @bp.route('/')
 # def treasuremap_home():
@@ -157,10 +157,16 @@ CORRECT_OPTION = 500  # Change to your correct option
 def treasuremap_home():
     global current_step
     if request.method == 'POST':
-        selected = request.form.get('quantity')
-        if int(selected) >= 2 * CORRECT_OPTION:
-            return redirect(url_for('treasuremap.descongelar'))
-        elif int(selected) >= CORRECT_OPTION:
+        color1 = request.form.get('color1')
+        color2 = request.form.get('color2')
+        color3 = request.form.get('color3')
+        color4 = request.form.get('color4')
+        color5 = request.form.get('color5')
+        color6 = request.form.get('color6')
+        color7 = request.form.get('color7')
+        color8 = request.form.get('color8')
+        colors = [color1, color2, color3, color4, color5, color6, color7, color8]
+        if colors == CORRECT_OPTION:
             return redirect(url_for('treasuremap.ok'))
         else:
             return redirect(url_for('treasuremap.notok'))
