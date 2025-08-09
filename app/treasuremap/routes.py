@@ -157,19 +157,7 @@ CORRECT_OPTION = ["verd", "blau", "vermell", "blanc", "vermell", "blau", "vermel
 def treasuremap_home():
     global current_step
     if request.method == 'POST':
-        color1 = request.form.get('color1')
-        color2 = request.form.get('color2')
-        color3 = request.form.get('color3')
-        color4 = request.form.get('color4')
-        color5 = request.form.get('color5')
-        color6 = request.form.get('color6')
-        color7 = request.form.get('color7')
-        color8 = request.form.get('color8')
-        colors = [color1, color2, color3, color4, color5, color6, color7, color8]
-        if colors == CORRECT_OPTION:
-            return redirect(url_for('treasuremap.ok'))
-        else:
-            return redirect(url_for('treasuremap.notok'))
+        return redirect(url_for('treasuremap.ok'))
     return render_template('treasuremap/select_option.html', scenes=scenes, current_step=current_step)
 
 @bp.route('/ok')
